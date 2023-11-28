@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://host.docker.internal:5432/rym
+    username: root
+    password: root
