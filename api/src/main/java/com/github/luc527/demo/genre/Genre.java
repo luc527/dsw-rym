@@ -1,4 +1,4 @@
-package com.github.luc527.demo;
+package com.github.luc527.demo.genre;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

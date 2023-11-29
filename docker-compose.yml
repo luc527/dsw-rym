@@ -16,6 +16,9 @@ services:
     image: postgres:16.1-alpine3.18
     ports:
       - ${PG_PORT}:5432
+    volumes:
+      - ./api/data/postgresql:/var/lib/postgresql/data
+      - ./api/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_DB=rym
       - POSTGRES_USER=root
@@ -31,4 +34,3 @@ services:
       - ${PGADMIN_PORT}:80
     volumes:
       - ./api/data/pgadmin:/var/lib/pgadmin
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

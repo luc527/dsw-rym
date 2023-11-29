@@ -3,5 +3,5 @@ spring:
     database: postgresql
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/rym
-    username: root
+    username: postgres
     password: root

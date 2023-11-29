@@ -1,17 +1,11 @@
-package com.github.luc527.demo;
+package com.github.luc527.demo.artist;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import com.github.luc527.demo.album.Album;
+import com.github.luc527.demo.genre.Genre;
+
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -25,6 +19,10 @@ public class Artist {
     public Long id;
 
     public String name;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="album", joinColumns=@JoinColumn(name="artist_id"))
+    public List<Album> albums;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
