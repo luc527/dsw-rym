@@ -3,6 +3,7 @@ package com.github.luc527.demo.artist;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.github.luc527.demo.genre.GenreRepository;
 
 // TODO replace orElseThrow() with something that spring boot can turn into a meaningful return body
 
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/artists")
 public class ArtistController {
@@ -44,6 +46,7 @@ public class ArtistController {
     @PutMapping("{id}")
     public ArtistDTO update(@RequestBody ArtistDTO dto, @PathVariable Long id) {
         var artist = artistRepo.findById(id).orElseThrow();
+        artist.setName(dto.getName());
         artist.setGenres(genreRepo.saveAllByName(dto.getGenres()));
         artist = artistRepo.save(artist);
         return ArtistDTO.from(artist);
@@ -52,6 +55,11 @@ public class ArtistController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable Long id) {
         artistRepo.deleteById(id);
+    }
+
+    @GetMapping("{id}")
+    public Optional<ArtistDTO> findById(@PathVariable Long id) {
+        return artistRepo.findById(id).map(ArtistDTO::from);
     }
 
     // TODO find endpoint with pagination + search + sort?
@@ -85,30 +93,4 @@ public class ArtistController {
         return ArtistAlbumDTO.from(album);
     }
 
-    @PutMapping("{artistId}/albums/{albumId}")
-    public ArtistAlbumDTO saveAlbum(
-        @RequestBody ArtistAlbumDTO dto,
-        @PathVariable Long artistId,
-        @PathVariable Long albumId
-    ) {
-        var currentArtist = artistRepo.findById(artistId).orElseThrow();
-
-        var newArtist = dto.getArtistId() == null
-            ? currentArtist
-            : artistRepo.findById(dto.getArtistId()).orElseThrow();
-
-        var album = albumRepo.findById(albumId).orElseThrow();
-
-        album.setArtist(newArtist);
-        album.setTitle(dto.getTitle());
-        album.setReleaseDate(dto.getReleaseDate());
-        album.setGenres(genreRepo.saveAllByName(dto.getGenres()));
-
-        return ArtistAlbumDTO.from(album);
-    }
-
-    @DeleteMapping("{artistId}/albums/{albumId}")
-    public void deleteAlbum(@PathVariable Long artistId, @PathVariable Long albumId) {
-        albumRepo.deleteById(albumId);
-    }
 }

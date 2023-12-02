@@ -34,7 +34,7 @@ public class Album {
     )
     private List<Genre> genres;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH})
     @JoinTable(name="review", joinColumns=@JoinColumn(name="album_id"))
     private List<Review> reviews;
 }

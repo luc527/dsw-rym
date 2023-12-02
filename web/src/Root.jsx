@@ -21,7 +21,7 @@ export default function Root() {
     <>
       <AppBar position='static'>
         <Toolbar disableGutters>
-          <Container maxWidth='xl'>
+          <Container>
             <Box sx={{ flexGrow: 1, display: 'flex'}}>
               {pages.map(({title, href}) => (
                 <Button
@@ -37,7 +37,7 @@ export default function Root() {
           </Container>
         </Toolbar>
       </AppBar>
-      <Container maxWidth='xl' sx={{mt: 2}}>
+      <Container sx={{mt: 2}}>
         <Outlet />
       </Container>
     </>

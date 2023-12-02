@@ -14,6 +14,9 @@ public class GenreRepositoryImpl implements GenreRepositoryCustom {
     GenreRepository genreRepo;
 
     public List<Genre> saveAllByName(List<String> names) {
+        if (names == null) {
+            return List.of();
+        }
         var existingGenres = genreRepo.findByNameIn(names);
         if (existingGenres.size() == names.size()) {
             return existingGenres;
