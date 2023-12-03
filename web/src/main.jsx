@@ -16,15 +16,10 @@ import Root from './Root.jsx';
 
 import ErrorPage from './ErrorPage.jsx';
 
-import Index from './routes/index.jsx';
-
 import Artists, {
   loader as artistsLoader,
 } from './routes/artists/index.jsx'
 
-import Albums from './routes/Albums/index.jsx'
-
-import Reviews from './routes/Reviews/index.jsx'
 import ArtistForm, {
   createAction as createArtistAction,
   editAction as editArtistAction,
@@ -48,6 +43,21 @@ import AlbumForm, {
 
 import { action as deleteAlbumAction } from './routes/albums/delete.jsx';
 
+import AlbumDetails, {
+  loader as albumDetailsLoader 
+} from './routes/albums/details.jsx'
+
+import ReviewForm, {
+  writeLoader as writeReviewLoader,
+  saveAction as saveReviewAction,
+  editLoader as editReviewLoader,
+  editAction as editReviewAction,
+} from './routes/reviews/form.jsx'
+
+import {
+  action as deleteReviewAction
+} from './routes/reviews/delete.jsx'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -56,7 +66,8 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Index />
+        element: <Artists />,
+        loader: artistsLoader,
       },
       {
         path: '/artists',
@@ -93,10 +104,6 @@ const router = createBrowserRouter([
         path: '/albums',
         children: [
           {
-            index: true,
-            element: <Albums />
-          },
-          {
             path: 'new',
             element: <AlbumForm />,
             loader: createAlbumLoader,
@@ -111,18 +118,35 @@ const router = createBrowserRouter([
             loader: editAlbumLoader,
             action: editAlbumAction,
             element: <AlbumForm edit />
+          },
+          {
+            path: ':id',
+            loader: albumDetailsLoader,
+            element: <AlbumDetails />
           }
         ]
       },
       {
-        path: '/reviews',
+        path: 'reviews',
         children: [
           {
-            index: true,
-            element: <Reviews />
+            path: 'write',
+            element: <ReviewForm />,
+            loader: writeReviewLoader,
+            action: saveReviewAction,
+          },
+          {
+            path: ':id/delete',
+            action: deleteReviewAction,
+          },
+          {
+            path: ':id/edit',
+            element: <ReviewForm edit />,
+            loader: editReviewLoader,
+            action: editReviewAction,
           },
         ]
-      },
+      }
     ]
   }
 ])

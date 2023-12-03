@@ -22,7 +22,7 @@ export default function Artists() {
           color='success'
           startIcon={<AddCircle/>}
           component={Link}
-          to='new'
+          to='/artists/new'
         >
           New artist
         </Button>
@@ -51,11 +51,11 @@ export default function Artists() {
                   <Button
                     variant='outlined'
                     component={Link}
-                    to={`${a.id}/edit`}
+                    to={`/artists/${a.id}/edit`}
                   >
                     Edit
                   </Button>
-                  <Form action={`${a.id}/delete`} method='POST'>
+                  <Form action={`/artists/${a.id}/delete`} method='POST'>
                     <Button
                       variant='outlined'
                       color='error'

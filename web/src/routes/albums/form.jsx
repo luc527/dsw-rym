@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useLoaderData, Form, redirect } from 'react-router-dom';
-import { Box, TextField, Autocomplete, Typography, Paper, Button } from '@mui/material';
+import { useLoaderData, Form, redirect, Link } from 'react-router-dom';
+import { Box, TextField, Autocomplete, Typography, Paper, Button, Breadcrumbs, Link as MuiLink } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Edit, AddCircle } from '@mui/icons-material';
 import { apiFetch, formObject } from '../../api';
@@ -18,74 +18,88 @@ export default function AlbumForm({ edit }) {
   }
 
   return (
-    <Form method='POST'>
-      <Box
-        component={Paper}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: 2,
-          gap: 2,
-          alignItems: 'center'
-        }}
-      >
-        <Typography variant='h6'>
-          {edit ? 'Edit album' : 'Create a new album'}
+    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+      <Breadcrumbs sx={{marginRight: 'auto'}}>
+        <MuiLink underline='hover' color='inherit' component={Link} to='/artists/'>
+          Artists
+        </MuiLink>
+        <MuiLink underline='hover' color='inherit' component={Link} to={`/artists/${artist.id}`}>
+          {artist.name}
+        </MuiLink>
+        <Typography color='text.primary'>
+          {edit ? 'Edit album' : 'New album'}
         </Typography>
-        <input type="hidden" name="artistId" value={artist?.id} />
-        <input type="hidden" name="id" value={album?.id} />
-        <input type="hidden" name="releaseDate" value={releaseDate?.format('YYYY-MM-DD')} />
-        <TextField
-          label='Artist'
-          value={artist?.name}
-          disabled
-          variant='outlined'
-          fullWidth
-        />
-        <TextField
-          name='title'
-          label='Album Title'
-          defaultValue={album?.title}
-          variant='outlined'
-          fullWidth
-        />
-        {genres.map(g => (
-          <input key={g} name='genres[]' type='hidden' value={g} />
-        ))}
-        <Autocomplete
-          fullWidth
-          onChange={handleGenresChange}
-          multiple
-          freeSolo
-          filterOptions={(x) => x}
-          options={[]}
-          value={genres}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant='outlined'
-              label='Genres'
-            />
-          )}
-        />
-        <DatePicker
-          label='Release date'
-          sx={{width: '100%'}}
-          onChange={v => setReleaseDate(v)}
-          value={releaseDate}
-        />
-        <Box sx={{ml: 'auto'}}>
-          <Button
-            startIcon={edit ? <Edit /> : <AddCircle />}
-            variant='contained'
-            color='success'
-            type='submit'
-          >
-            {edit ? 'Save' : 'Create'}
-          </Button>
+      </Breadcrumbs>
+      <Form method='POST'>
+        <Box
+          component={Paper}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 2,
+            gap: 2,
+            alignItems: 'center'
+          }}
+        >
+          <Typography variant='h6'>
+            {edit ? 'Edit album' : 'Create a new album'}
+          </Typography>
+          <input type="hidden" name="artistId" value={artist?.id} />
+          <input type="hidden" name="id" value={album?.id} />
+          <input type="hidden" name="releaseDate" value={releaseDate?.format('YYYY-MM-DD')} />
+          <TextField
+            label='Artist'
+            value={artist?.name}
+            disabled
+            variant='outlined'
+            fullWidth
+          />
+          <TextField
+            required
+            name='title'
+            label='Album Title'
+            defaultValue={album?.title}
+            variant='outlined'
+            fullWidth
+          />
+          {genres.map(g => (
+            <input key={g} name='genres[]' type='hidden' value={g} />
+          ))}
+          <Autocomplete
+            fullWidth
+            onChange={handleGenresChange}
+            multiple
+            freeSolo
+            filterOptions={(x) => x}
+            options={[]}
+            value={genres}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant='outlined'
+                label='Genres'
+              />
+            )}
+          />
+          <DatePicker
+            label='Release date'
+            sx={{width: '100%'}}
+            onChange={v => setReleaseDate(v)}
+            value={releaseDate}
+          />
+          <Box sx={{ml: 'auto'}}>
+            <Button
+              startIcon={edit ? <Edit /> : <AddCircle />}
+              variant='contained'
+              color='success'
+              type='submit'
+            >
+              {edit ? 'Save' : 'Create'}
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Form>
+      </Form>
+    </Box>
   )
 }
 

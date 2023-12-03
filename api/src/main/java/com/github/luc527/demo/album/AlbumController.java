@@ -69,11 +69,6 @@ public class AlbumController {
             .toList();
     }
 
-    @GetMapping("{albumId}/reviews/{reviewId}")
-    public Optional<AlbumReviewDTO> findReviewById(@PathVariable Long albumId, @PathVariable Long reviewId) {
-        return reviewRepo.findById(reviewId).map(AlbumReviewDTO::from);
-    }
-
     @PostMapping("{albumId}/reviews")
     public AlbumReviewDTO saveReview(@RequestBody AlbumReviewDTO dto, @PathVariable Long albumId) {
         var album = albumRepo.findById(albumId).orElseThrow();
@@ -83,15 +78,4 @@ public class AlbumController {
         return AlbumReviewDTO.from(review);
     }
 
-    @PutMapping("{albumId}/reviews/{reviewId}")
-    public AlbumReviewDTO saveReview(@RequestBody AlbumReviewDTO dto, @PathVariable Long albumId, @PathVariable Long reviewId) {
-        var album = albumRepo.findById(albumId).orElseThrow();
-
-        var review = dto.toReview();
-        review.setId(reviewId);
-        review.setAlbum(album);
-        review = reviewRepo.save(review);
-
-        return AlbumReviewDTO.from(review);
-    }
 }

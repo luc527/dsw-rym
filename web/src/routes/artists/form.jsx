@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Form, redirect, useLoaderData } from 'react-router-dom';
-import { Box, TextField, Autocomplete, Paper, Button, Typography } from '@mui/material';
+import { Form, redirect, useLoaderData, Link } from 'react-router-dom';
+import { Box, TextField, Autocomplete, Paper, Button, Typography, Breadcrumbs, Link as MuiLink } from '@mui/material';
 import { Edit, AddCircle } from '@mui/icons-material';
 import { apiFetch, formObject } from '../../api.js';
 
@@ -47,57 +47,68 @@ export default function ArtistForm({ edit=false }) {
   }
 
   return (
-    <Form method='POST'>
-      <Box
-        component={Paper}
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: 2,
-          gap: 2,
-          alignItems: 'center'
-        }}
-      >
-        <Typography variant='h6'>
-          {edit ? 'Edit artist' : 'Create a new artist'}
+    <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+      <Breadcrumbs>
+        <MuiLink underline='hover' color='inherit' component={Link} to='/artists/'>
+          Artists
+        </MuiLink>
+        <Typography color="text.primary">
+          {edit ? 'Edit' : 'New'}
         </Typography>
-        <TextField
-          name='name'
-          label='Artist Name'
-          defaultValue={artist?.name}
-          variant='outlined'
-          fullWidth
-        />
-        {genres.map(g => (
-          <input key={g} name='genres[]' type='hidden' value={g} />
-        ))}
-        <Autocomplete
-          fullWidth
-          onChange={handleGenresChange}
-          multiple
-          freeSolo
-          filterOptions={(x) => x}
-          options={[]}
-          value={genres}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant='outlined'
-              label='Genres'
-            />
-        )}
-        />
-        <Box sx={{ml: 'auto'}}>
-          <Button
-            startIcon={edit ? <Edit /> : <AddCircle />}
-            variant='contained'
-            color='success'
-            type='submit'
-          >
-            {edit ? 'Save' : 'Create'}
-          </Button>
+      </Breadcrumbs>
+      <Form method='POST'>
+        <Box
+          component={Paper}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 2,
+            gap: 2,
+            alignItems: 'center'
+          }}
+        >
+          <Typography variant='h6'>
+            {edit ? 'Edit artist' : 'Create a new artist'}
+          </Typography>
+          <TextField
+            required
+            name='name'
+            label='Artist Name'
+            defaultValue={artist?.name}
+            variant='outlined'
+            fullWidth
+          />
+          {genres.map(g => (
+            <input key={g} name='genres[]' type='hidden' value={g} />
+          ))}
+          <Autocomplete
+            fullWidth
+            onChange={handleGenresChange}
+            multiple
+            freeSolo
+            filterOptions={(x) => x}
+            options={[]}
+            value={genres}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant='outlined'
+                label='Genres'
+              />
+          )}
+          />
+          <Box sx={{ml: 'auto'}}>
+            <Button
+              startIcon={edit ? <Edit /> : <AddCircle />}
+              variant='contained'
+              color='success'
+              type='submit'
+            >
+              {edit ? 'Save' : 'Create'}
+            </Button>
+          </Box>
         </Box>
-      </Box>
-    </Form>
+      </Form>
+    </Box>
   )
 }

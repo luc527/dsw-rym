@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography, Button } from "@mui/material";
+import { Autocomplete, Box, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField, Typography, Button, Breadcrumbs, Link as MuiLink } from "@mui/material";
 import { AddCircle } from '@mui/icons-material';
 import { Link, Form } from "react-router-dom";
 import { useLoaderData } from "react-router";
@@ -10,6 +10,15 @@ export default function ArtistDetails() {
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', gap: 2}}>
+      <Breadcrumbs>
+        <MuiLink underline='hover' color='inherit' component={Link} to='/artists/'>
+          Artists
+        </MuiLink>
+        <Typography color="text.primary">
+          {artist.name}
+        </Typography>
+      </Breadcrumbs>
+      <Typography variant='h6' sx={{textAlign: 'center'}}>Artist details</Typography>
       <TextField
         disabled
         fullWidth
@@ -57,7 +66,11 @@ export default function ArtistDetails() {
               {artist.albums.map(a => (
                 <TableRow key={a.id}>
                   <TableCell>{a.id}</TableCell>
-                  <TableCell>{a.title}</TableCell>
+                  <TableCell>
+                    <Link to={`/albums/${a.id}`}>
+                      {a.title}
+                    </Link>
+                  </TableCell>
                   <TableCell>{a.genres.join(', ')}</TableCell>
                   <TableCell>{new Date(a.releaseDate).toLocaleString('pt-BR').substring(0, 10)}</TableCell>
                   <TableCell sx={{display: 'flex', flexDirection: 'row', gap: 2}}>

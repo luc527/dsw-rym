@@ -1,7 +1,18 @@
 spring:
   jpa:
     database: postgresql
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
   datasource:
     url: jdbc:postgresql://host.docker.internal:5432/rym
     username: postgres
     password: root
+
+logging:
+  level:
+    org:
+      hibernate:
+        type: TRACE

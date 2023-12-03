@@ -33,8 +33,4 @@ public class Album {
         inverseJoinColumns=@JoinColumn(name="genre_id")
     )
     private List<Genre> genres;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade={CascadeType.DETACH})
-    @JoinTable(name="review", joinColumns=@JoinColumn(name="album_id"))
-    private List<Review> reviews;
 }
