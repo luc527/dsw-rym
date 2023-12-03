@@ -6,6 +6,7 @@ UDESC, engenharia de software, desenvolvimento web: trabalho final, clone simpli
 To start the API server:
 ```bash
 cd api
+./mvnw package
 docker compose up -d
 ```
 
