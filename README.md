@@ -10,7 +10,7 @@ docker compose up -d
 ```
 
 To start the client:
-```
+```bash
 cd web
 npm install
 npm run dev
